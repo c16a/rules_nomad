@@ -9,9 +9,19 @@ NomadVolumeInfo = provider(
 
 def _nomad_volume_impl(ctx):
     src = ctx.file.src
+    executable = ctx.outputs.executable
+
+    ctx.actions.write(
+        output = executable,
+        content = "#!/usr/bin/env bash\nexit 0\n",
+        is_executable = True,
+    )
 
     return [
-        DefaultInfo(files = depset([src])),
+        DefaultInfo(
+            executable = executable,
+            files = depset([src, executable]),
+        ),
         NomadVolumeInfo(src = src),
     ]
 
@@ -25,4 +35,5 @@ nomad_volume = rule(
         ),
     },
     doc = "Declares a single Nomad volume file.",
+    executable = True,
 )

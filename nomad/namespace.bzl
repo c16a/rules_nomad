@@ -9,9 +9,19 @@ NomadNamespaceInfo = provider(
 
 def _nomad_namespace_impl(ctx):
     src = ctx.file.src
+    executable = ctx.outputs.executable
+
+    ctx.actions.write(
+        output = executable,
+        content = "#!/usr/bin/env bash\nexit 0\n",
+        is_executable = True,
+    )
 
     return [
-        DefaultInfo(files = depset([src])),
+        DefaultInfo(
+            executable = executable,
+            files = depset([src, executable]),
+        ),
         NomadNamespaceInfo(src = src),
     ]
 
@@ -25,4 +35,5 @@ nomad_namespace = rule(
         ),
     },
     doc = "Declares a single Nomad namespace file.",
+    executable = True,
 )

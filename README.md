@@ -47,6 +47,9 @@ The generated repository exposes:
 @nomad_toolchains//:nomad_toolchain
 ```
 
+All declared Nomad resource targets are runnable with `bazel run`. They are
+currently no-ops.
+
 ## Jobs
 
 Use `nomad_job` to declare a single Nomad job file:

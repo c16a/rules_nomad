@@ -9,9 +9,19 @@ NomadJobInfo = provider(
 
 def _nomad_job_impl(ctx):
     src = ctx.file.src
+    executable = ctx.outputs.executable
+
+    ctx.actions.write(
+        output = executable,
+        content = "#!/usr/bin/env bash\nexit 0\n",
+        is_executable = True,
+    )
 
     return [
-        DefaultInfo(files = depset([src])),
+        DefaultInfo(
+            executable = executable,
+            files = depset([src, executable]),
+        ),
         NomadJobInfo(src = src),
     ]
 
@@ -25,4 +35,5 @@ nomad_job = rule(
         ),
     },
     doc = "Declares a single Nomad job file.",
+    executable = True,
 )

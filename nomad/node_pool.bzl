@@ -9,9 +9,19 @@ NomadNodePoolInfo = provider(
 
 def _nomad_node_pool_impl(ctx):
     src = ctx.file.src
+    executable = ctx.outputs.executable
+
+    ctx.actions.write(
+        output = executable,
+        content = "#!/usr/bin/env bash\nexit 0\n",
+        is_executable = True,
+    )
 
     return [
-        DefaultInfo(files = depset([src])),
+        DefaultInfo(
+            executable = executable,
+            files = depset([src, executable]),
+        ),
         NomadNodePoolInfo(src = src),
     ]
 
@@ -25,4 +35,5 @@ nomad_node_pool = rule(
         ),
     },
     doc = "Declares a single Nomad node pool file.",
+    executable = True,
 )
