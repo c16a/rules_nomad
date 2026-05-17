@@ -77,6 +77,21 @@ nomad_node_pool(
 
 The `src` attribute accepts exactly one file.
 
+## Volumes
+
+Use `nomad_volume` to declare a single Nomad volume file:
+
+```starlark
+load("@rules_nomad//nomad:volume.bzl", "nomad_volume")
+
+nomad_volume(
+    name = "database",
+    src = "database.nomad.hcl",
+)
+```
+
+The `src` attribute accepts exactly one file.
+
 ## Namespaces
 
 Use `nomad_namespace` to declare a single Nomad namespace file:
