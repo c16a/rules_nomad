@@ -62,6 +62,21 @@ nomad_job(
 
 The `src` attribute accepts exactly one file.
 
+## Node Pools
+
+Use `nomad_node_pool` to declare a single Nomad node pool file:
+
+```starlark
+load("@rules_nomad//nomad:node_pool.bzl", "nomad_node_pool")
+
+nomad_node_pool(
+    name = "batch",
+    src = "batch.nomad.hcl",
+)
+```
+
+The `src` attribute accepts exactly one file.
+
 ## Namespaces
 
 Use `nomad_namespace` to declare a single Nomad namespace file:
