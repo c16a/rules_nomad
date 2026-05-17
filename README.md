@@ -23,15 +23,7 @@ use_repo(nomad, "nomad_toolchains")
 register_toolchains("@nomad_toolchains//:all")
 ```
 
-The `version` value is the HashiCorp Nomad release version. For example,
-`version = "2.0.1"` downloads a release archive matching this pattern:
-
-```text
-https://releases.hashicorp.com/nomad/2.0.1/nomad_2.0.1_darwin_amd64.zip
-```
-
-The archive suffix is selected from the current host operating system and CPU
-architecture. Supported host platforms are:
+Supported host platforms are:
 
 - `darwin_amd64`
 - `darwin_arm64`
@@ -79,8 +71,6 @@ nomad_job(
 )
 ```
 
-The `src` attribute accepts exactly one file.
-
 ## Node Pools
 
 Use `nomad_node_pool` to declare a single Nomad node pool file:
@@ -94,8 +84,6 @@ nomad_node_pool(
 )
 ```
 
-The `src` attribute accepts exactly one file.
-
 ## Volumes
 
 Use `nomad_volume` to declare a single Nomad volume file:
@@ -108,8 +96,6 @@ nomad_volume(
     src = "database.nomad.hcl",
 )
 ```
-
-The `src` attribute accepts exactly one file.
 
 ## Resource Quotas
 
@@ -126,8 +112,6 @@ nomad_resource_quota(
 )
 ```
 
-The `src` attribute accepts exactly one file.
-
 ## Namespaces
 
 Use `nomad_namespace` to declare a single Nomad namespace file:
@@ -140,5 +124,3 @@ nomad_namespace(
     src = "platform.nomad.hcl",
 )
 ```
-
-The `src` attribute accepts exactly one file.
