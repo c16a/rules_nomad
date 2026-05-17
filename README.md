@@ -4,7 +4,7 @@ Bazel module support for HashiCorp Nomad.
 
 This repository currently provides Bzlmod setup for downloading a Nomad release
 for the current host OS/architecture, registering it as a Bazel toolchain, and
-declaring Nomad job files.
+declaring Nomad configuration files.
 
 ## Usage
 
@@ -57,6 +57,21 @@ load("@rules_nomad//nomad:job.bzl", "nomad_job")
 nomad_job(
     name = "api",
     src = "api.nomad.hcl",
+)
+```
+
+The `src` attribute accepts exactly one file.
+
+## Namespaces
+
+Use `nomad_namespace` to declare a single Nomad namespace file:
+
+```starlark
+load("@rules_nomad//nomad:namespace.bzl", "nomad_namespace")
+
+nomad_namespace(
+    name = "platform",
+    src = "platform.nomad.hcl",
 )
 ```
 
