@@ -191,7 +191,7 @@
     "//nomad:extensions.bzl%nomad": {
       "general": {
         "bzlTransitiveDigest": "5DXUkdFoUJTJgQWHPkOCkzQwQWqE80i4kn6Paf98jqA=",
-        "usagesDigest": "TTgqoO7On3L/2tH0kFJJi6sBGYdF8G3PPvebzpq6bls=",
+        "usagesDigest": "rWbt3XbPR5SQMleVg8MoprSvkyxlJQ6okrLHY0ExEBY=",
         "recordedInputs": [
           "REPO_MAPPING:,platforms platforms"
         ],

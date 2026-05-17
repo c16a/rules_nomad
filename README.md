@@ -14,6 +14,12 @@ and register the generated toolchain repository:
 ```starlark
 bazel_dep(name = "rules_nomad", version = "0.0.0")
 
+git_override(
+    module_name = "rules_nomad",
+    remote = "https://github.com/c16a/rules_nomad",
+    commit = "main"
+)
+
 nomad = use_extension("@rules_nomad//nomad:extensions.bzl", "nomad")
 nomad.toolchain(
     version = "2.0.1",
