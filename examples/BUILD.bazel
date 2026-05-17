@@ -1,0 +1,30 @@
+load("//nomad:job.bzl", "nomad_job")
+load("//nomad:namespace.bzl", "nomad_namespace")
+load("//nomad:node_pool.bzl", "nomad_node_pool")
+load("//nomad:resource_quota.bzl", "nomad_resource_quota")
+load("//nomad:volume.bzl", "nomad_volume")
+
+nomad_job(
+    name = "api_job",
+    src = "api.nomad.hcl",
+)
+
+nomad_namespace(
+    name = "platform_namespace",
+    src = "platform-namespace.nomad.hcl",
+)
+
+nomad_node_pool(
+    name = "batch_node_pool",
+    src = "batch-node-pool.nomad.hcl",
+)
+
+nomad_resource_quota(
+    name = "production_resource_quota",
+    src = "production-resource-quota.nomad.hcl",
+)
+
+nomad_volume(
+    name = "database_volume",
+    src = "database-volume.nomad.hcl",
+)
