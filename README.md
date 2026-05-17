@@ -92,6 +92,23 @@ nomad_volume(
 
 The `src` attribute accepts exactly one file.
 
+## Resource Quotas
+
+`nomad_resource_quota` is only available for Nomad Enterprise users.
+
+Use `nomad_resource_quota` to declare a single Nomad resource quota file:
+
+```starlark
+load("@rules_nomad//nomad:resource_quota.bzl", "nomad_resource_quota")
+
+nomad_resource_quota(
+    name = "production",
+    src = "production-quota.nomad.hcl",
+)
+```
+
+The `src` attribute accepts exactly one file.
+
 ## Namespaces
 
 Use `nomad_namespace` to declare a single Nomad namespace file:
