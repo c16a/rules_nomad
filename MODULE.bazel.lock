@@ -190,7 +190,7 @@
   "moduleExtensions": {
     "//nomad:extensions.bzl%nomad": {
       "general": {
-        "bzlTransitiveDigest": "dQ5e/nO4aKQa7OPKvTBbOGB5lTMyYkJmvptL0rR7CDw=",
+        "bzlTransitiveDigest": "5DXUkdFoUJTJgQWHPkOCkzQwQWqE80i4kn6Paf98jqA=",
         "usagesDigest": "TTgqoO7On3L/2tH0kFJJi6sBGYdF8G3PPvebzpq6bls=",
         "recordedInputs": [
           "REPO_MAPPING:,platforms platforms"
@@ -199,6 +199,7 @@
           "nomad_toolchains": {
             "repoRuleId": "@@//nomad/private:toolchain_repo.bzl%nomad_toolchains_repo",
             "attributes": {
+              "toolchain_bzl": "@@//nomad:toolchain.bzl",
               "version": "2.0.1",
               "toolchain_type": "@@//nomad:toolchain_type"
             }

@@ -1,5 +1,7 @@
 """Rules for declaring Nomad resource quotas."""
 
+load("//nomad/private:runner.bzl", "write_nomad_runner")
+
 NomadResourceQuotaInfo = provider(
     doc = "Information about a declared Nomad resource quota.",
     fields = {
@@ -9,18 +11,13 @@ NomadResourceQuotaInfo = provider(
 
 def _nomad_resource_quota_impl(ctx):
     src = ctx.file.src
-    executable = ctx.outputs.executable
-
-    ctx.actions.write(
-        output = executable,
-        content = "#!/usr/bin/env bash\nexit 0\n",
-        is_executable = True,
-    )
+    executable, nomad = write_nomad_runner(ctx, src, ["quota", "apply"])
 
     return [
         DefaultInfo(
             executable = executable,
             files = depset([src, executable]),
+            runfiles = ctx.runfiles(files = [src, nomad]),
         ),
         NomadResourceQuotaInfo(src = src),
     ]
@@ -36,4 +33,5 @@ nomad_resource_quota = rule(
     },
     doc = "Declares a single Nomad resource quota file.",
     executable = True,
+    toolchains = ["//nomad:toolchain_type"],
 )

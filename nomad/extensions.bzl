@@ -17,6 +17,7 @@ def _nomad_impl(module_ctx):
 
     nomad_toolchains_repo(
         name = "nomad_toolchains",
+        toolchain_bzl = Label("//nomad:toolchain.bzl"),
         version = root_version,
         toolchain_type = Label("//nomad:toolchain_type"),
     )

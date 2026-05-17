@@ -1,5 +1,7 @@
 """Rules for declaring Nomad node pools."""
 
+load("//nomad/private:runner.bzl", "write_nomad_runner")
+
 NomadNodePoolInfo = provider(
     doc = "Information about a declared Nomad node pool.",
     fields = {
@@ -9,18 +11,13 @@ NomadNodePoolInfo = provider(
 
 def _nomad_node_pool_impl(ctx):
     src = ctx.file.src
-    executable = ctx.outputs.executable
-
-    ctx.actions.write(
-        output = executable,
-        content = "#!/usr/bin/env bash\nexit 0\n",
-        is_executable = True,
-    )
+    executable, nomad = write_nomad_runner(ctx, src, ["node", "pool", "apply"])
 
     return [
         DefaultInfo(
             executable = executable,
             files = depset([src, executable]),
+            runfiles = ctx.runfiles(files = [src, nomad]),
         ),
         NomadNodePoolInfo(src = src),
     ]
@@ -36,4 +33,5 @@ nomad_node_pool = rule(
     },
     doc = "Declares a single Nomad node pool file.",
     executable = True,
+    toolchains = ["//nomad:toolchain_type"],
 )

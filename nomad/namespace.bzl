@@ -1,5 +1,7 @@
 """Rules for declaring Nomad namespaces."""
 
+load("//nomad/private:runner.bzl", "write_nomad_runner")
+
 NomadNamespaceInfo = provider(
     doc = "Information about a declared Nomad namespace.",
     fields = {
@@ -9,18 +11,13 @@ NomadNamespaceInfo = provider(
 
 def _nomad_namespace_impl(ctx):
     src = ctx.file.src
-    executable = ctx.outputs.executable
-
-    ctx.actions.write(
-        output = executable,
-        content = "#!/usr/bin/env bash\nexit 0\n",
-        is_executable = True,
-    )
+    executable, nomad = write_nomad_runner(ctx, src, ["namespace", "apply"])
 
     return [
         DefaultInfo(
             executable = executable,
             files = depset([src, executable]),
+            runfiles = ctx.runfiles(files = [src, nomad]),
         ),
         NomadNamespaceInfo(src = src),
     ]
@@ -36,4 +33,5 @@ nomad_namespace = rule(
     },
     doc = "Declares a single Nomad namespace file.",
     executable = True,
+    toolchains = ["//nomad:toolchain_type"],
 )

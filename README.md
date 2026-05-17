@@ -47,8 +47,24 @@ The generated repository exposes:
 @nomad_toolchains//:nomad_toolchain
 ```
 
-All declared Nomad resource targets are runnable with `bazel run`. They are
-currently no-ops.
+All declared Nomad resource targets are runnable with `bazel run` and use the
+registered Nomad toolchain:
+
+- `nomad_job`: `nomad job run <src>`
+- `nomad_namespace`: `nomad namespace apply <src>`
+- `nomad_node_pool`: `nomad node pool apply <src>`
+- `nomad_resource_quota`: `nomad quota apply <src>`
+- `nomad_volume`: `nomad volume create <src>`
+
+## Environment
+
+Set Nomad environment variables before running any Nomad-related targets:
+
+```sh
+export NOMAD_ADDR="http://127.0.0.1:4646"
+```
+
+- `NOMAD_ADDR`: URL of the Nomad server.
 
 ## Jobs
 

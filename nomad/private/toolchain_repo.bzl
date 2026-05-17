@@ -44,9 +44,16 @@ def _nomad_toolchains_repo_impl(repository_ctx):
         """
 package(default_visibility = ["//visibility:public"])
 
+load("{toolchain_bzl}", "nomad_toolchain")
+
 filegroup(
     name = "nomad_binary",
     srcs = ["download/{executable}"],
+)
+
+nomad_toolchain(
+    name = "nomad_toolchain_info",
+    nomad = "download/{executable}",
 )
 
 toolchain(
@@ -55,13 +62,14 @@ toolchain(
         "{os_constraint}",
         "{cpu_constraint}",
     ],
-    toolchain = ":nomad_binary",
+    toolchain = ":nomad_toolchain_info",
     toolchain_type = "{toolchain_type}",
 )
 """.format(
             cpu_constraint = cpu_constraint,
             executable = executable,
             os_constraint = os_constraint,
+            toolchain_bzl = repository_ctx.attr.toolchain_bzl,
             toolchain_type = repository_ctx.attr.toolchain_type,
         ),
     )
@@ -81,6 +89,10 @@ nomad_toolchains_repo = repository_rule(
         "toolchain_type": attr.label(
             mandatory = True,
             doc = "The rules_nomad toolchain type label.",
+        ),
+        "toolchain_bzl": attr.label(
+            mandatory = True,
+            doc = "The label of the Starlark file defining the Nomad toolchain rule.",
         ),
         "version": attr.string(
             mandatory = True,

@@ -1,5 +1,7 @@
 """Rules for declaring Nomad volumes."""
 
+load("//nomad/private:runner.bzl", "write_nomad_runner")
+
 NomadVolumeInfo = provider(
     doc = "Information about a declared Nomad volume.",
     fields = {
@@ -9,18 +11,13 @@ NomadVolumeInfo = provider(
 
 def _nomad_volume_impl(ctx):
     src = ctx.file.src
-    executable = ctx.outputs.executable
-
-    ctx.actions.write(
-        output = executable,
-        content = "#!/usr/bin/env bash\nexit 0\n",
-        is_executable = True,
-    )
+    executable, nomad = write_nomad_runner(ctx, src, ["volume", "create"])
 
     return [
         DefaultInfo(
             executable = executable,
             files = depset([src, executable]),
+            runfiles = ctx.runfiles(files = [src, nomad]),
         ),
         NomadVolumeInfo(src = src),
     ]
@@ -36,4 +33,5 @@ nomad_volume = rule(
     },
     doc = "Declares a single Nomad volume file.",
     executable = True,
+    toolchains = ["//nomad:toolchain_type"],
 )

@@ -1,5 +1,7 @@
 """Rules for declaring Nomad jobs."""
 
+load("//nomad/private:runner.bzl", "write_nomad_runner")
+
 NomadJobInfo = provider(
     doc = "Information about a declared Nomad job.",
     fields = {
@@ -9,18 +11,13 @@ NomadJobInfo = provider(
 
 def _nomad_job_impl(ctx):
     src = ctx.file.src
-    executable = ctx.outputs.executable
-
-    ctx.actions.write(
-        output = executable,
-        content = "#!/usr/bin/env bash\nexit 0\n",
-        is_executable = True,
-    )
+    executable, nomad = write_nomad_runner(ctx, src, ["job", "run"])
 
     return [
         DefaultInfo(
             executable = executable,
             files = depset([src, executable]),
+            runfiles = ctx.runfiles(files = [src, nomad]),
         ),
         NomadJobInfo(src = src),
     ]
@@ -36,4 +33,5 @@ nomad_job = rule(
     },
     doc = "Declares a single Nomad job file.",
     executable = True,
+    toolchains = ["//nomad:toolchain_type"],
 )
