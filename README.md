@@ -1,10 +1,10 @@
 # rules_nomad
 
-Bazel module support for registering a HashiCorp Nomad toolchain.
+Bazel module support for HashiCorp Nomad.
 
-This repository currently only provides Bzlmod setup for downloading a Nomad
-release for the current host OS/architecture and registering it as a Bazel
-toolchain. It does not provide Nomad build or execution rules yet.
+This repository currently provides Bzlmod setup for downloading a Nomad release
+for the current host OS/architecture, registering it as a Bazel toolchain, and
+declaring Nomad job files.
 
 ## Usage
 
@@ -46,3 +46,18 @@ The generated repository exposes:
 @nomad_toolchains//:nomad_binary
 @nomad_toolchains//:nomad_toolchain
 ```
+
+## Jobs
+
+Use `nomad_job` to declare a single Nomad job file:
+
+```starlark
+load("@rules_nomad//nomad:job.bzl", "nomad_job")
+
+nomad_job(
+    name = "api",
+    src = "api.nomad.hcl",
+)
+```
+
+The `src` attribute accepts exactly one file.
