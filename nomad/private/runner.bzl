@@ -1,8 +1,15 @@
 """Helpers for generating runnable Nomad resource targets."""
 
-def write_nomad_runner(ctx, src, args):
+def write_nomad_runner(ctx, src, args, after_commands = []):
     executable = ctx.outputs.executable
     nomad = ctx.toolchains["//nomad:toolchain_type"].nomad
+
+    command_lines = [
+        '"${nomad}" %s "${src}"' % " ".join(args),
+    ] + [
+        '"${nomad}" %s' % " ".join(command)
+        for command in after_commands
+    ]
 
     ctx.actions.write(
         output = executable,
@@ -35,8 +42,8 @@ find_runfile() {
 nomad="$(find_runfile "%s")"
 src="$(find_runfile "%s")"
 
-exec "${nomad}" %s "${src}"
-""" % (nomad.short_path, src.short_path, " ".join(args)),
+%s
+""" % (nomad.short_path, src.short_path, "\n".join(command_lines)),
         is_executable = True,
     )
 

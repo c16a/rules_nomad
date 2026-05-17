@@ -127,6 +127,15 @@ load("@rules_nomad//nomad:namespace.bzl", "nomad_namespace")
 
 nomad_namespace(
     name = "platform",
+    quotas = [":production"],
     src = "platform.nomad.hcl",
 )
+```
+
+When `quotas` is set, `bazel run` applies the namespace file and then applies
+each quota to the namespace:
+
+```sh
+nomad namespace apply <src>
+nomad namespace apply -quota <quota target name> <namespace target name>
 ```

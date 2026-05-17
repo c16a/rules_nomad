@@ -11,6 +11,7 @@ nomad_job(
 
 nomad_namespace(
     name = "platform_namespace",
+    quotas = [":production_resource_quota"],
     src = "platform-namespace.nomad.hcl",
 )
 

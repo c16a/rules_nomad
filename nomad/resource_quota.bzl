@@ -5,6 +5,7 @@ load("//nomad/private:runner.bzl", "write_nomad_runner")
 NomadResourceQuotaInfo = provider(
     doc = "Information about a declared Nomad resource quota.",
     fields = {
+        "name": "The Bazel target name of the Nomad resource quota.",
         "src": "The Nomad resource quota source file.",
     },
 )
@@ -19,7 +20,10 @@ def _nomad_resource_quota_impl(ctx):
             files = depset([src, executable]),
             runfiles = ctx.runfiles(files = [src, nomad]),
         ),
-        NomadResourceQuotaInfo(src = src),
+        NomadResourceQuotaInfo(
+            name = ctx.label.name,
+            src = src,
+        ),
     ]
 
 nomad_resource_quota = rule(
